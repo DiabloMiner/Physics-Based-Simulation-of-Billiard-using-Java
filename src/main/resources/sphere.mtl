@@ -1,0 +1,18 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Mat
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kn sphereNormal.png
+map_Kd sphere.png
+disp blackDisplacement.png
+map_Ks sphereRoughness.png
+map_emissive sphereMetallic.png
+map_Ka sphereAo.png
