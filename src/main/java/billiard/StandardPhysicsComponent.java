@@ -17,6 +17,7 @@ public abstract class StandardPhysicsComponent extends PhysicsComponent {
     @Override
     public void performTimeStep(double timeStep, int roundingDigit) {
         performSemiImplicitEulerTimeStep(timeStep, roundingDigit);
+        // System.out.println(velocity.length() +  " | " +  angularVelocity.length());
     }
 
     @Override

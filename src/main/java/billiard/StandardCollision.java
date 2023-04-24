@@ -4,7 +4,7 @@ import org.joml.Vector3d;
 
 public class StandardCollision extends Collision {
 
-    public static int roundingDigit = 15;
+    public static int roundingDigit = 30;
 
     public StandardCollision(Vector3d point, Vector3d normal, PhysicsComponent A, PhysicsComponent B, double timeStepTaken, double distance) {
         super(point, normal, A, B, timeStepTaken ,distance);

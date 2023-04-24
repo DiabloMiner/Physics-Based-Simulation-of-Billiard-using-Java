@@ -28,9 +28,7 @@ public class MainRenderingEngine extends RenderingEngine {
         ShaderProgram lsShaderProgram = shaderProgramManager.addShaderProgram(new ShaderProgram("VS", "FS_LS"), false, false);
         ShaderProgram simpleShaderProgram = shaderProgramManager.addShaderProgram(new ShaderProgram("SVS", "SFS"), false, false);
 
-        lightManager.addDirectionalLight(new DirectionalLight(new Vector3f(-0.7f, 1.0f, 2.9f), new Vector3f(0.0f, 0.0f, 1.0f), 1024));
-        lightManager.addPointLight(new PointLight(new Vector3f(0.0f, 5.0f, 0.0f), new Vector3f(50.0f, 38.0f, 0.0f), 1024));
-        lightManager.addSpotLight(new CameraUpdatedSpotLight(new Vector3f(camera.position), new Vector3f(camera.direction), new Vector3f(0.8f, 0.0f, 0.0f), 1024, camera));
+        lightManager.addRenderablePointLight(new RenderablePointLight(new PointLight(new Vector3f(0.3f, 2.0f, 0.0f), new Vector3f(100.0f, 58.0f, 10.0f), 1024)));
 
         RenderingUnit standardRenderingUnit = new StandardRenderingUnit(shaderProgram, Entity.getRenderComponents(renderComponentManager.allEntities));
         RenderingUnit lightRenderingUnit = new LightRenderingUnit(lsShaderProgram, lightManager.allRenderableLights);

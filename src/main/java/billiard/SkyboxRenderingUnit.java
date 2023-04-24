@@ -10,7 +10,7 @@ public class SkyboxRenderingUnit extends RenderingUnit {
     private final Skybox skybox;
 
     public SkyboxRenderingUnit(Skybox skybox) {
-        super(getSkyboxShaderProgram(), new RenderComponent[] {Skybox.model});
+        super(getSkyboxShaderProgram(), new RenderComponent[] {skybox});
         this.skybox = skybox;
         skybox.normalTexture.bind();
     }

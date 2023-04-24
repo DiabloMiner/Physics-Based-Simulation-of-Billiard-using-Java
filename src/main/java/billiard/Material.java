@@ -15,8 +15,8 @@ public enum Material {
     public static Map<Integer, Double> coefficientsOfRollingFriction = new HashMap<>();
     static {
         coefficientsOfRestitution.putIfAbsent(hash(Ball, Ball), 0.95);
-        coefficientsOfStaticFriction.putIfAbsent(hash(Ball, Ball), 0.005);
-        coefficientsOfKineticFriction.putIfAbsent(hash(Ball, Ball), 0.005);
+        coefficientsOfStaticFriction.putIfAbsent(hash(Ball, Ball), 0.06);
+        coefficientsOfKineticFriction.putIfAbsent(hash(Ball, Ball), 0.06);
         coefficientsOfRollingFriction.putIfAbsent(hash(Ball, Ball), 0.0);
 
         coefficientsOfRestitution.putIfAbsent(hash(Ball, Cloth), 0.5);

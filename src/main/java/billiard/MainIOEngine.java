@@ -20,16 +20,16 @@ public class MainIOEngine extends IOEngine implements WindowResizeObserver {
     public void processInputs(double deltaTime) {
         for (Window window : windowMap.keySet()) {
             if (window.isKeyPressed(GLFW.GLFW_KEY_W)) {
-                windowMap.get(window).getKey().moveForwards((float) deltaTime);
+                windowMap.get(window).getKey().moveForwards();
             }
             if (window.isKeyPressed(GLFW.GLFW_KEY_S)) {
-                windowMap.get(window).getKey().moveBackwards((float) deltaTime);
+                windowMap.get(window).getKey().moveBackwards();
             }
             if (window.isKeyPressed(GLFW.GLFW_KEY_A)) {
-                windowMap.get(window).getKey().moveLeft((float) deltaTime);
+                windowMap.get(window).getKey().moveLeft();
             }
             if (window.isKeyPressed(GLFW.GLFW_KEY_D)) {
-                windowMap.get(window).getKey().moveRight((float) deltaTime);
+                windowMap.get(window).getKey().moveRight();
             }
 
             if (window.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
@@ -41,6 +41,8 @@ public class MainIOEngine extends IOEngine implements WindowResizeObserver {
             if (window.isKeyPressed(GLFW.GLFW_KEY_F11)) {
                 window.setFullscreen(!window.isFullscreen());
             }
+
+            windowMap.get(window).getValue().getSkyboxManager().setActive(BilliardEngine.activeSkybox);
         }
     }
 

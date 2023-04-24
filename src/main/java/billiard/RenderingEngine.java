@@ -5,6 +5,8 @@ import java.util.List;
 
 public abstract class RenderingEngine implements SubEngine {
 
+    public static final Texture2D blackTexture = new Texture2D("./src/main/resources/blackDisplacement.png", false, false);
+
     protected LightManager lightManager;
     protected RenderComponentManager renderComponentManager;
     protected ShaderProgramManager shaderProgramManager;

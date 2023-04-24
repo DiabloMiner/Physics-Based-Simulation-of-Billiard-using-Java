@@ -1,5 +1,6 @@
 package billiard;
 
+import org.joml.Math;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
 
@@ -108,6 +109,41 @@ public class Window {
             }
         };
         GLFW.glfwSetWindowFocusCallback(id, focusCallback);
+
+        GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
+            @Override
+            public void invoke(long window, int key, int scancode, int action, int mods) {
+                if (key == GLFW.GLFW_KEY_SPACE && action == 1) {
+                    if (BilliardEngine.timeDilationDivisor == BilliardEngine.standardTimeDilationDivisor) {
+                        BilliardEngine.timeDilationDivisor = BilliardEngine.maximumTimeDilationDivisor;
+                    } else {
+                        BilliardEngine.timeDilationDivisor = BilliardEngine.standardTimeDilationDivisor;
+                    }
+                }
+
+                if (key == GLFW.GLFW_KEY_UP && action == 1) {
+                    BilliardEngine.standardTimeDilationDivisor = (long) Math.clamp(1, Integer.MAX_VALUE, BilliardEngine.standardTimeDilationDivisor + 1);
+                    if (BilliardEngine.timeDilationDivisor != BilliardEngine.maximumTimeDilationDivisor) {
+                        BilliardEngine.timeDilationDivisor = BilliardEngine.standardTimeDilationDivisor;
+                    }
+                }
+                if (key == GLFW.GLFW_KEY_DOWN && action == 1) {
+                    BilliardEngine.standardTimeDilationDivisor = (long) Math.clamp(1, Integer.MAX_VALUE, BilliardEngine.standardTimeDilationDivisor - 1);
+                    if (BilliardEngine.timeDilationDivisor != BilliardEngine.maximumTimeDilationDivisor) {
+                        BilliardEngine.timeDilationDivisor = BilliardEngine.standardTimeDilationDivisor;
+                    }
+                }
+
+                if (key == GLFW.GLFW_KEY_F && action == 1) {
+                    BilliardEngine.activeSkybox = !BilliardEngine.activeSkybox;
+                }
+
+                if (key == GLFW.GLFW_KEY_L && action == 1) {
+                    BilliardEngine.moveLights = !BilliardEngine.moveLights;
+                }
+            }
+        };
+        GLFW.glfwSetKeyCallback(id, keyCallback);
     }
 
     public void swapBuffers() {

@@ -17,11 +17,14 @@ public class Skybox extends RenderComponent {
     public final CubeMap convolutedTexture;
     public final CubeMap prefilteredTexture;
 
+    private boolean active;
+
     public Skybox(String directory, String fileType, boolean flipImage) throws Exception {
         super();
         normalTexture = new CubeMap(directory, fileType, flipImage, true);
         convolutedTexture = CubeMap.convoluteCubeMap(normalTexture, convolutedTextureSize).storedTexture;
         prefilteredTexture = CubeMap.prefilterCubeMap(normalTexture, prefilteredTextureSize).storedTexture;
+        active = true;
         bindTextures();
     }
 
@@ -30,6 +33,7 @@ public class Skybox extends RenderComponent {
         normalTexture = CubeMap.fromEquirectangularMap(filePath, size, flipImage).storedTexture;
         convolutedTexture = CubeMap.convoluteCubeMap(normalTexture, convolutedTextureSize).storedTexture;
         prefilteredTexture = CubeMap.prefilterCubeMap(normalTexture, prefilteredTextureSize).storedTexture;
+        active = true;
         bindTextures();
     }
 
@@ -54,7 +58,9 @@ public class Skybox extends RenderComponent {
 
     @Override
     public void draw(ShaderProgram shaderProgram, Map.Entry<RenderInto, RenderParameters> flags) {
-        model.draw(shaderProgram, flags);
+        if (active) {
+            model.draw(shaderProgram, flags);
+        }
     }
 
     @Override
@@ -62,6 +68,10 @@ public class Skybox extends RenderComponent {
         normalTexture.destroy();
         convolutedTexture.destroy();
         prefilteredTexture.destroy();
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public static int getBrdfLookUpTextureIndex() {

@@ -83,4 +83,10 @@ public class LightManager implements Manager {
         }
     }
 
+    public void rotatePointLights(double deltaAngle) {
+        for (PointLight pointLight : allPointLights) {
+            pointLight.rotate(deltaAngle);
+        }
+    }
+
 }

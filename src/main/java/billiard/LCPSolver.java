@@ -239,7 +239,7 @@ public class LCPSolver {
      * @param muR The rolling friction coefficient
      */
     public LCPSolverResult solveBLCPWithMinimumMapNewton(DoubleMatrix A, DoubleMatrix b, double mu, double muR, double alpha, double beta, double delta, double epsilonAbsolute, double epsilonRelative, int iterations, int lineSearchIterations, int roundingDigit) {
-        return solveBLCPWithMinimumMapNewton(solveBLCPWithPGS(A, b, mu, muR, epsilonRelative, 2, roundingDigit).x, A, b, mu, muR, alpha, beta, delta, epsilonAbsolute, epsilonRelative, iterations, lineSearchIterations, roundingDigit);
+        return solveBLCPWithMinimumMapNewton(solveBLCPWithPGS(A, b, mu, muR, epsilonRelative, 10, roundingDigit).x, A, b, mu, muR, alpha, beta, delta, epsilonAbsolute, epsilonRelative, iterations, lineSearchIterations, roundingDigit);
     }
 
 

@@ -2,6 +2,7 @@ package billiard;
 
 import org.jblas.DoubleMatrix;
 import org.joml.Math;
+import org.joml.Vector3d;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ public abstract class PhysicsEngine implements SubEngine {
 
     public static double epsilon = 1e-15;
     public static double collisionTimeEpsilon = 10e-50;
-    public static final int roundingDigit = 20;
+    public static final int roundingDigit = 30;
 
     public LCPSolverConfiguration solverConfig;
     public double simulationTimeStep;
@@ -311,14 +312,30 @@ public abstract class PhysicsEngine implements SubEngine {
     }
 
     protected void processCollisionSubList(List<Collision> subList, double timeStep) {
+        if (subList.get(0).A.angularVelocity.length() == 0.377585970737488) {
+            System.out.print("");
+        }
         DoubleMatrix[] matrices = createMatrices(subList, timeStep);
         int size = matrices[0].rows / subList.size();
         for (int i = 0; i < subList.size(); i++) {
+            PhysicsComponent A = subList.get(i).A, B = subList.get(i).B;
+            double systemEnergy = 0.0, updatedSystemEnergy = 0.0;
+            double Akin = 0.5 * A.mass * A.velocity.lengthSquared(), Bkin = 0.5 * B.mass * B.velocity.lengthSquared();
+            double Aang = 0.5 * A.worldFrameInertia.get(0, 0) * A.angularVelocity.lengthSquared(), Bang = 0.5 * B.worldFrameInertia.get(0, 0) * B.angularVelocity.lengthSquared();
+            systemEnergy += Akin + Aang;
+            systemEnergy += Bkin + Bang;
+
             DoubleMatrix APrime = matrices[0].get(Transforms.createIndexArray(i * size, size), Transforms.createIndexArray(i * size, size));
             DoubleMatrix bPrime = matrices[1].get(Transforms.createIndexArray(i * size, size), new int[] {0});
             DoubleMatrix x = solveLCP(APrime, bPrime, subList.get(i)).x;
             subList.get(i).applyImpulse(x.get(0), new double[] {x.get(1), x.get(2)}, new double[] {x.get(4), x.get(5), x.get(3)}, roundingDigit);
             LCPSolver.addSolvedCollision(subList.get(i), x);
+
+            updatedSystemEnergy += 0.5 * A.mass * (A.velocity.add(new Vector3d(A.force).div(A.mass).mul(timeStep), new Vector3d())).lengthSquared() + 0.5 * A.worldFrameInertia.get(0, 0) * A.angularVelocity.lengthSquared();
+            updatedSystemEnergy += 0.5 * B.mass * (B.velocity.add(new Vector3d(B.force).div(B.mass).mul(timeStep), new Vector3d())).lengthSquared() + 0.5 * B.worldFrameInertia.get(0, 0) * B.angularVelocity.lengthSquared();
+            if ((updatedSystemEnergy - systemEnergy) > epsilon) {
+                System.out.print("");
+            }
         }
     }
 

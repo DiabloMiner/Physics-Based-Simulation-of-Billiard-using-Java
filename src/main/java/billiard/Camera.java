@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 public class Camera {
 
     public static float firstFov = 45.0f, firstNear = 0.1f, firstFar = 100.0f;
-    public static float movementFactor = 8.0f;
+    public static float movementFactor = 4.0f * 0.01f;
     public static Vector3d worldSpaceRight = new Vector3d(1.0, 0.0, 0.0);
     public static Vector3d worldSpaceUp = new Vector3d(0.0, 1.0, 0.0);
 
@@ -49,30 +49,18 @@ public class Camera {
         this.pitch += mouse.deltaY;
         this.pitch = Math.clamp(-90.0f, 90.0f, pitch);
 
-        if (Math.abs(pitch) < 90.0f) {
-            up.set(worldSpaceUp);
-        }
-
         changeDirection();
 
         BilliardEngine.engineInstance.getEventManager().addEvent(new CameraDirectionUpdate(this));
     }
 
     private void changeDirection() {
-        Vector3f direction = new Vector3f(0.0f), right = new Vector3f(0.0f);
+        Vector3f direction = new Vector3f(0.0f);
         direction.x = Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch));
         direction.y = Math.sin(Math.toRadians(pitch));
         direction.z = Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch));
         direction.normalize(this.direction);
-        if (Math.abs(pitch) == 90.0f) {
-            right.x = Math.cos(Math.toRadians(yaw + 90.0f));
-            right.z = Math.sin(Math.toRadians(yaw + 90.0f));
-            right.negate().normalize(this.right);
-            up = direction.cross(right, new Vector3f()).normalize().negate();
-        } else {
-            this.direction.mul(new Vector3f(-1.0f, 1.0f, -1.0f));
-            this.direction.cross(up, this.right).normalize();
-        }
+        this.direction.cross(up, this.right).normalize();
     }
 
     public void updateZoom(float deltaValue) {
@@ -86,26 +74,26 @@ public class Camera {
         return new Vector3f(position).add(direction);
     }
 
-    public void moveForwards(float factor) {
-        position.add(new Vector3f(direction).mul(movementFactor * factor));
+    public void moveForwards() {
+        position.add(new Vector3f(direction).mul(movementFactor));
 
         BilliardEngine.engineInstance.getEventManager().addEvent(new CameraPositionUpdate(this));
     }
 
-    public void moveBackwards(float factor) {
-        position.sub(new Vector3f(direction).mul(movementFactor * factor));
+    public void moveBackwards() {
+        position.sub(new Vector3f(direction).mul(movementFactor));
 
         BilliardEngine.engineInstance.getEventManager().addEvent(new CameraPositionUpdate(this));
     }
 
-    public void moveRight(float factor) {
-        position.add(new Vector3f(right).mul(movementFactor * factor));
+    public void moveRight() {
+        position.add(new Vector3f(right).mul(movementFactor));
 
         BilliardEngine.engineInstance.getEventManager().addEvent(new CameraPositionUpdate(this));
     }
 
-    public void moveLeft(float factor) {
-        position.sub(new Vector3f(right).mul(movementFactor * factor));
+    public void moveLeft() {
+        position.sub(new Vector3f(right).mul(movementFactor));
 
         BilliardEngine.engineInstance.getEventManager().addEvent(new CameraPositionUpdate(this));
     }
